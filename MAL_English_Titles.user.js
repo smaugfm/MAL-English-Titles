@@ -5,10 +5,10 @@
 // @author       Animorphs
 // @grant        GM.setValue
 // @grant        GM.getValue
-// @namespace    https://github.com/Animorphs/MAL-English-Titles
+// @namespace    https://github.com/smaugfm/MAL-English-Titles
 // @match        https://myanimelist.net/*
-// @updateURL    https://raw.githubusercontent.com/Animorphs/MAL-English-Titles/master/MAL_English_Titles.user.js
-// @downloadURL  https://raw.githubusercontent.com/Animorphs/MAL-English-Titles/master/MAL_English_Titles.user.js
+// @updateURL    https://raw.githubusercontent.com/smaugfm/MAL-English-Titles/master/MAL_English_Titles.user.js
+// @downloadURL  https://raw.githubusercontent.com/smaugfm/MAL-English-Titles/master/MAL_English_Titles.user.js
 // ==/UserScript==
 
 
