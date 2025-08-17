@@ -14,7 +14,7 @@
 
 
 // Get Japanese titles from page, and send to be translated (addTranslation)
-function translate()
+async function translate()
 {
     const LOCATION_HREF = location.href;
     const URL_REGEX = /https:\/\/myanimelist\.net\/(anime|manga)\/([1-9][0-9]?[0-9]?[0-9]?[0-9]?[0-9]?)\/?.*/;
@@ -31,12 +31,12 @@ function translate()
         {
             let title = titleHtml.innerText;
             console.log(`Updated ${type} ${id}: ${title}`);
-            type == 'anime' ? storeAnime(id, title) : storeManga(id, title);
+            type == 'anime' ? await storeAnime(id, title) : await storeManga(id, title);
         }
         else if (storedAnime[id][0] === '' || !storedAnime.hasOwnProperty(id))
         {
             console.log(`Updated ${type} ${id}`);
-            type == 'anime' ? storeAnime(id, '') : storeManga(id, '');
+            type == 'anime' ? await storeAnime(id, '') : await storeManga(id, '');
         }
     }
 
@@ -601,7 +601,7 @@ function getEnglishTitle(type, url, id, selector, parent, styleId, styleIdEnd)
     xhr.responseType = 'document';
 
     // Set the callback
-    xhr.onload = function()
+    xhr.onload = async function()
     {
         if (xhr.readyState === xhr.DONE && xhr.status === 200 && xhr.responseXML !== null)
         {
@@ -619,11 +619,11 @@ function getEnglishTitle(type, url, id, selector, parent, styleId, styleIdEnd)
 
             if (type === 'anime')
             {
-                storeAnime(id, englishTitle);
+                await storeAnime(id, englishTitle);
             }
             else if (type === 'manga')
             {
-                storeManga(id, englishTitle);
+                await storeManga(id, englishTitle);
             }
 
             document.querySelectorAll(selector).forEach(function(element)
@@ -643,14 +643,14 @@ function getEnglishTitle(type, url, id, selector, parent, styleId, styleIdEnd)
 }
 
 // Store English titles for anime in cache
-function storeAnime(id, engTitle)
+async function storeAnime(id, engTitle)
 {
     storedAnime[id] = [engTitle, Date.now()];
     GM.setValue('anime', storedAnime);
 }
 
 // Store English titles for manga in cache
-function storeManga(id, engTitle)
+async function storeManga(id, engTitle)
 {
     storedManga[id] = [engTitle, Date.now()];
     GM.setValue('manga', storedManga);
@@ -697,20 +697,22 @@ function checkManga(id)
     console.log('New manga ' + id);
     return false;
 }
+var storedAnime;
+var storedManga;
 
+(async () => {
 // Get cached English titles if they exist, else create empty dictionary
-var storedAnime = GM.getValue('anime');
-var storedManga = GM.getValue('manga');
-if (!storedAnime)
-{
-    GM.setValue('anime',{});
+  storedAnime = await GM.getValue('anime');
+  storedManga = await GM.getValue('manga');
+  if (!storedAnime) {
+    await GM.setValue('anime', {});
     storedAnime = {};
-}
-if (!storedManga)
-{
-    GM.setValue('manga',{});
+  }
+  if (!storedManga) {
+    await GM.setValue('manga', {});
     storedManga = {};
-}
+  }
 
 // Launch actual script
-translate();
+  await translate();
+})();
