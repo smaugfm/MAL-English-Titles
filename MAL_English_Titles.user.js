@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name         MAL English Titles
-// @version      2.2.0
+// @version      2.2.1
 // @description  Add English Titles to various MyAnimeList pages, whilst still displaying Japanese Titles
 // @author       Animorphs
-// @grant        GM_setValue
-// @grant        GM_getValue
+// @grant        GM.setValue
+// @grant        GM.getValue
 // @namespace    https://github.com/Animorphs/MAL-English-Titles
 // @match        https://myanimelist.net/*
 // @updateURL    https://raw.githubusercontent.com/Animorphs/MAL-English-Titles/master/MAL_English_Titles.user.js
@@ -646,14 +646,14 @@ function getEnglishTitle(type, url, id, selector, parent, styleId, styleIdEnd)
 function storeAnime(id, engTitle)
 {
     storedAnime[id] = [engTitle, Date.now()];
-    GM_setValue('anime', storedAnime);
+    GM.setValue('anime', storedAnime);
 }
 
 // Store English titles for manga in cache
 function storeManga(id, engTitle)
 {
     storedManga[id] = [engTitle, Date.now()];
-    GM_setValue('manga', storedManga);
+    GM.setValue('manga', storedManga);
 }
 
 // Check if English title for anime is cached, and recheck if empty + last check was >3 weeks
@@ -699,16 +699,16 @@ function checkManga(id)
 }
 
 // Get cached English titles if they exist, else create empty dictionary
-var storedAnime = GM_getValue('anime');
-var storedManga = GM_getValue('manga');
+var storedAnime = GM.getValue('anime');
+var storedManga = GM.getValue('manga');
 if (!storedAnime)
 {
-    GM_setValue('anime',{});
+    GM.setValue('anime',{});
     storedAnime = {};
 }
 if (!storedManga)
 {
-    GM_setValue('manga',{});
+    GM.setValue('manga',{});
     storedManga = {};
 }
 
